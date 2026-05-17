@@ -10,13 +10,13 @@ pipeline {
 
         stage('Install') {
             steps {
-                bat 'python -m pip install -r requirements.txt'
+                bat '"C:\\Users\\gulag\\AppData\\Local\\Python\\bin\\python.exe" -m pip install -r requirements.txt'
             }
         }
 
         stage('Test') {
             steps {
-                bat 'pytest'
+                bat '"C:\\Users\\gulag\\AppData\\Local\\Python\\bin\\python.exe" -m pytest'
             }
         }
     }
