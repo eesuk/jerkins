@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/eesuk/jerkins.git', branch: 'main'
+                git url: 'https://github.com/eesuk/jerkins.git', branch: 'master'
             }
         }
 
