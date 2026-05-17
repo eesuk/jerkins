@@ -1,25 +1,49 @@
 pipeline {
     agent any
 
+    environment {
+        PYTHON = "C:\\Users\\gulag\\AppData\\Local\\Python\\bin\\python.exe"
+    }
+
     stages {
+
         stage('Checkout') {
             steps {
                 git url: 'https://github.com/eesuk/jerkins.git', branch: 'master'
             }
         }
 
-        stage('Install') {
+        stage('Debug workspace') {
             steps {
-                bat '"C:\\Users\\gulag\\AppData\\Local\\Python\\bin\\python.exe" -m pip install --upgrade pip'
-                bat '"C:\\Users\\gulag\\AppData\\Local\\Python\\bin\\python.exe" -m pip install -r requirements.txt'
-                bat '"C:\\Users\\gulag\\AppData\\Local\\Python\\bin\\python.exe" -m pip list'
+                bat 'dir'
             }
         }
 
-        stage('Test') {
+        stage('Check Python') {
             steps {
-                bat '"C:\\Users\\gulag\\AppData\\Local\\Python\\bin\\python.exe" -m pytest -v'
+                bat '"%PYTHON%" --version'
+                bat '"%PYTHON%" -c "import sys; print(sys.executable)"'
             }
+        }
+
+        stage('Install dependencies') {
+            steps {
+                bat '"%PYTHON%" -m pip install --upgrade pip'
+                bat '"%PYTHON%" -m pip install -r requirements.txt || exit 1'
+                bat '"%PYTHON%" -m pip list'
+            }
+        }
+
+        stage('Run tests') {
+            steps {
+                bat '"%PYTHON%" -m pytest -v || exit 1'
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Pipeline finished'
         }
     }
 }
